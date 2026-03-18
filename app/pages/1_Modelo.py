@@ -1,0 +1,131 @@
+from __future__ import annotations
+
+import json
+from pathlib import Path
+
+import streamlit as st
+
+from utils.loaders import (
+    load_model,
+    load_metrics,
+    get_model_features,
+    build_model_input,
+)
+from utils.charts import feature_importance
+
+BASE_DIR = Path(__file__).resolve().parents[1]
+METRICS_PATH = BASE_DIR / "models" / "metricas_modelo.json"
+
+
+def get_metric_value(metricas: dict, *possible_keys, default=None):
+    for key in possible_keys:
+        if key in metricas and metricas[key] is not None:
+            return metricas[key]
+    return default
+
+
+st.title("Modelo Preditivo de Risco de Defasagem")
+st.markdown(
+    """
+    Esta página atende à etapa preditiva do case: estimar a probabilidade
+    de um aluno entrar em risco de defasagem a partir dos indicadores disponíveis.
+    """
+)
+
+modelo = load_model()
+metricas = load_metrics()
+features_modelo = get_model_features(modelo, metricas)
+
+accuracy = get_metric_value(metricas, "accuracy", "acc")
+f1_score = get_metric_value(metricas, "f1", "f1_score")
+roc_auc = get_metric_value(metricas, "roc_auc", "auc")
+
+c1, c2, c3 = st.columns(3)
+c1.metric("Accuracy", f"{accuracy:.2f}" if accuracy is not None else "-")
+c2.metric("F1-Score", f"{f1_score:.2f}" if f1_score is not None else "-")
+c3.metric("ROC-AUC", f"{roc_auc:.2f}" if roc_auc is not None else "-")
+
+with st.expander("Por que o simulador tem menos campos?"):
+    st.markdown(
+        f"""
+        O simulador foi reduzido para refletir apenas as variáveis realmente esperadas
+        pelo modelo salvo.
+
+        **Features atuais do modelo:** `{features_modelo}`
+
+        Isso evita erro de inferência causado por divergência entre treino e entrada do app.
+        """
+    )
+
+st.subheader("Importância das variáveis")
+fig_importancia = feature_importance(modelo, features_modelo)
+if fig_importancia is not None:
+    st.plotly_chart(fig_importancia, width="stretch")
+    st.caption(
+        "As variáveis com maior importância são as que mais influenciam a classificação do modelo."
+    )
+
+st.subheader("Simulador de risco")
+
+defaults = {
+    "ida": 6.0,
+    "ieg": 6.0,
+    "iaa": 6.0,
+    "ips": 6.0,
+    "ipp": 6.0,
+    "ian": 5.0,
+    "ianv": 5.0,
+    "ipv": 6.0,
+    "inde": 6.0,
+}
+
+descricoes = {
+    "ida": "Desempenho acadêmico do aluno.",
+    "ieg": "Engajamento nas atividades.",
+    "iaa": "Autoavaliação do próprio aluno.",
+    "ips": "Indicadores psicossociais.",
+    "ipp": "Indicadores psicopedagógicos.",
+    "ian": "Adequação de nível.",
+    "ianv": "Variável derivada usada em algumas versões do treino.",
+    "ipv": "Indicador complementar do aluno.",
+    "inde": "Indicador global do desenvolvimento educacional.",
+}
+
+entrada_usuario = {}
+cols = st.columns(3)
+
+for i, feature in enumerate(features_modelo):
+    with cols[i % 3]:
+        entrada_usuario[feature] = st.slider(
+            feature.upper(),
+            min_value=0.0,
+            max_value=10.0,
+            value=float(defaults.get(feature, 5.0)),
+            step=0.1,
+            help=descricoes.get(feature.lower(), "")
+        )
+
+if st.button("Calcular probabilidade de risco"):
+    try:
+        entrada = build_model_input(modelo, entrada_usuario)
+        prob = modelo.predict_proba(entrada)[0][1]
+
+        c1, c2 = st.columns([1, 2])
+        c1.metric("Probabilidade de risco", f"{prob * 100:.1f}%")
+
+        if prob < 0.33:
+            c2.success("Classificação: Baixo risco")
+        elif prob < 0.66:
+            c2.warning("Classificação: Risco moderado")
+        else:
+            c2.error("Classificação: Alto risco")
+
+        st.info(
+            """
+            Esta probabilidade representa a chance estimada de o aluno entrar
+            em risco de defasagem segundo o padrão aprendido pelo modelo.
+            """
+        )
+
+    except Exception as e:
+        st.error(f"Erro ao calcular predição: {e}")

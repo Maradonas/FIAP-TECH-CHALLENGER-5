@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ambiente virtual
+.venv/
+venv/
+env/
+
+# Streamlit / cache
+.streamlit/secrets.toml
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Modelos e dados pesados, se não quiser subir
+data/processed/*.csv
+data/processed/*.json
+models/*.joblib
