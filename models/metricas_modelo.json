@@ -1,42 +1,28 @@
 {
-  "features_modelo": [
-    "ida",
-    "ieg",
-    "ips",
-    "ipp",
-    "iaa"
-  ],
-  "target": "risco_defasagem",
-  "amostras_treino": 2424,
-  "amostras_teste": 606,
-  "accuracy": 0.6402640264026402,
-  "f1": 0.7205128205128205,
-  "roc_auc": 0.6384455009762501,
-  "class_report": {
-    "0": {
-      "precision": 0.656441717791411,
-      "recall": 0.39776951672862454,
-      "f1-score": 0.49537037037037035,
-      "support": 269.0
-    },
-    "1": {
-      "precision": 0.6343115124153499,
-      "recall": 0.8338278931750742,
-      "f1-score": 0.7205128205128205,
-      "support": 337.0
-    },
-    "accuracy": 0.6402640264026402,
-    "macro avg": {
-      "precision": 0.6453766151033804,
-      "recall": 0.6157987049518494,
-      "f1-score": 0.6079415954415954,
-      "support": 606.0
-    },
-    "weighted avg": {
-      "precision": 0.644134986418915,
-      "recall": 0.6402640264026402,
-      "f1-score": 0.6205733500700498,
-      "support": 606.0
+    "split_strategy": "temporal",
+    "train_rows": 1874,
+    "test_rows": 1156,
+    "accuracy": 0.9783737024221453,
+    "precision": 1.0,
+    "recall": 0.9531835205992509,
+    "f1_score": 0.9760306807286673,
+    "roc_auc": 1.0,
+    "features": [
+        "ida",
+        "ieg",
+        "ips",
+        "ipp",
+        "iaa",
+        "ian",
+        "inde",
+        "media_indicadores",
+        "variacao_indicadores",
+        "engajamento_social",
+        "desempenho_academico"
+    ],
+    "best_params": {
+        "model__max_depth": 8,
+        "model__min_samples_split": 5,
+        "model__n_estimators": 300
     }
-  }
 }

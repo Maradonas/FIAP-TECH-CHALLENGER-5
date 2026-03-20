@@ -1,378 +1,219 @@
-# FIAP Tech Challenge 5 — Dashboard Analítico e Preditivo | Passos Mágicos
-
-## Visão geral
-
-Este projeto foi desenvolvido para o **FIAP Tech Challenge 5**, com base no case **Passos Mágicos**.  
-O objetivo é construir uma solução de análise de dados e predição de risco de defasagem escolar, transformando os indicadores educacionais em um **dashboard interativo em Streamlit**.
-
-A aplicação foi estruturada para responder de forma visual e executiva às principais perguntas do case, com foco em:
-
-- desempenho acadêmico
-- defasagem escolar
-- engajamento
-- autoavaliação
-- fatores psicossociais e psicopedagógicos
-- risco de defasagem
-- indícios de efetividade do programa ao longo do tempo
-
----
-
-## Objetivo do projeto
-
-O projeto possui dois grandes blocos:
-
-### 1. Análise Exploratória
-Investigar o comportamento dos indicadores da base para entender padrões, relações e sinais relevantes para o case.
-
-### 2. Modelo Preditivo
-Treinar um modelo de machine learning capaz de estimar a probabilidade de um aluno estar em **risco de defasagem**, com base nos indicadores disponíveis.
-
----
-
-## Estrutura do projeto
-
-```bash
-FIAP-TECH-CHALLENGER-5/
-│
-├── app/
-│   ├── Home.py
-│   ├── pages/
-│   │   ├── 1_Modelo.py
-│   │   └── 2_Analise_Exploratoria.py
-│   └── utils/
-│       ├── loaders.py
-│       └── charts.py
-│
-├── data/
-│   ├── BASE DE DADOS PEDE 2024 - DATATHON.xlsx
-│   └── processed/
-│       ├── base_unificada.csv
-│       └── diagnostico_base.json
-│
-├── models/
-│   ├── modelo_risco_defasagem.joblib
-│   └── metricas_modelo.json
-│
-├── notebooks/
-├── src/
-├── 01_EDA_Passos_Magicos_chumbado.py
-├── 02_Modelo_Risco_Defasagem_chumbado.py
-└── README.md
-```
-
----
-
-## Explicação dos principais arquivos
-
-### `app/Home.py`
-Página inicial do dashboard.
-
-Responsabilidades:
-- apresentar o projeto
-- exibir resumo executivo
-- mostrar conclusões gerais da análise
-- orientar a navegação entre as páginas
-
----
-
-### `app/pages/1_Modelo.py`
-Página do modelo preditivo.
-
-Responsabilidades:
-- exibir métricas do modelo
-- mostrar importância das variáveis
-- disponibilizar simulador de risco
-- calcular a probabilidade de risco de defasagem com base nas features do modelo salvo
-
----
-
-### `app/pages/2_Analise_Exploratoria.py`
-Página de análise exploratória.
-
-Responsabilidades:
-- exibir gráficos analíticos
-- permitir filtro por ano
-- responder visualmente às perguntas do case
-- apresentar interpretações executivas abaixo de cada gráfico
+# FIAP Tech Challenge 5 --- Datathon Passos Mágicos
 
----
+## Dashboard Analítico e Modelo Preditivo de Risco de Defasagem
 
-### `app/utils/loaders.py`
-Camada de carregamento e padronização de dados e modelo.
+## 1. Visão geral
 
-Responsabilidades:
-- carregar a base tratada
-- carregar o modelo salvo
-- carregar métricas do modelo
-- normalizar colunas
-- reconstruir variáveis importantes como `inde`, `pedra`, `faixa_ian` e `risco_defasagem`
-- montar corretamente a entrada do simulador com as features esperadas pelo modelo
+Este projeto foi desenvolvido para o **FIAP Tech Challenge 5 / Datathon
+Fase 5**, com base no case da **Associação Passos Mágicos**, organização
+social que atua há mais de três décadas na transformação da vida de
+crianças e jovens em vulnerabilidade social por meio da educação.
 
----
+A proposta desta entrega foi construir uma solução completa composta
+por:
 
-### `app/utils/charts.py`
-Camada responsável pela geração dos gráficos.
+-   análise exploratória de dados
+-   modelo preditivo de risco de defasagem
+-   dashboard interativo em Streamlit
+-   pipeline de tratamento e preparação de dados
 
-Responsabilidades:
-- criar visualizações padronizadas
-- centralizar estilo visual
-- evitar dependências desnecessárias
-- manter consistência entre gráficos do dashboard
+O objetivo principal é identificar **padrões e sinais que ajudam a
+prever alunos com maior risco de defasagem escolar**.
 
----
+------------------------------------------------------------------------
 
-### `01_EDA_Passos_Magicos_chumbado.py`
-Script de preparação da base.
+## 2. Objetivo do desafio
 
-Responsabilidades:
-- ler o Excel bruto
-- consolidar as abas anuais
-- padronizar colunas
-- corrigir tipos
-- reconstruir colunas relevantes
-- gerar `base_unificada.csv`
-- gerar `diagnostico_base.json`
+O Tech Challenge solicita:
 
----
+-   análise exploratória com storytelling
+-   construção de modelo preditivo
+-   aplicação interativa em Streamlit
+-   repositório GitHub com código e documentação
+-   apresentação e vídeo explicando a solução
 
-### `02_Modelo_Risco_Defasagem_chumbado.py`
-Script de treino do modelo.
+------------------------------------------------------------------------
 
-Responsabilidades:
-- ler a base tratada
-- selecionar features
-- treinar o modelo
-- avaliar desempenho
-- salvar o pipeline treinado em `.joblib`
-- salvar métricas em `.json`
+## 3. Perguntas de negócio respondidas
 
----
+O projeto foi estruturado para responder questões como:
 
-## Dados utilizados
+-   Qual o perfil de defasagem dos alunos?
+-   O engajamento influencia o desempenho?
+-   Existe coerência entre autoavaliação e desempenho real?
+-   Fatores psicossociais influenciam o risco?
+-   Quais indicadores explicam melhor o desenvolvimento do aluno?
+-   É possível prever risco de defasagem com machine learning?
+-   Existem sinais de efetividade do programa ao longo do tempo?
 
-A base do projeto é derivada do arquivo Excel do case, consolidando diferentes anos do programa.  
-Durante o tratamento, foram considerados indicadores como:
+------------------------------------------------------------------------
 
-- `IDA` — Indicador de desempenho acadêmico
-- `IEG` — Indicador de engajamento
-- `IAA` — Indicador de autoavaliação
-- `IPS` — Indicador psicossocial
-- `IPP` — Indicador psicopedagógico
-- `IAN` — Indicador de adequação de nível
-- `INDE` — Indicador geral de desenvolvimento
-- `PEDRA` / `FASE` — classificação/fase do aluno no programa
+## 4. Base de dados
 
----
+A base consolidada possui aproximadamente **3.030 registros**, cobrindo
+os anos:
 
-## Regra de risco de defasagem
+-   2022
+-   2023
+-   2024
 
-Um dos pontos mais importantes do projeto foi corrigir a lógica do alvo (`target`) de classificação.
+Indicadores principais utilizados:
 
-### Problema encontrado
-Uma regra simplificada baseada apenas em `IAN >= 1` gerava distorções graves, como:
-- 100% dos alunos classificados como risco
-- distribuição inconsistente das faixas de IAN
-- perda de credibilidade dos gráficos e do modelo
+-   IDA --- desempenho acadêmico
+-   IEG --- engajamento
+-   IAA --- autoavaliação
+-   IPS --- fatores psicossociais
+-   IPP --- fatores psicopedagógicos
+-   IPV --- ponto de virada
+-   IAN --- adequação de nível
+-   INDE --- desenvolvimento educacional global
 
-### Regra adotada
-A lógica priorizada foi:
+------------------------------------------------------------------------
 
-```python
-risco_defasagem = 1 se defasagem < 0
-```
+## 5. Preparação dos dados
 
-Fallbacks:
-- se `defasagem` não existir, usar `defas < 0`
-- apenas em último caso, usar uma aproximação com `ian <= 5`
+O processo de preparação incluiu:
 
-Essa abordagem torna a variável-alvo mais coerente com a ideia de atraso em relação à fase ideal.
+1.  consolidação das abas anuais do Excel
+2.  padronização de nomes de colunas
+3.  conversão de colunas numéricas
+4.  unificação das bases
+5.  criação da variável alvo de risco
 
----
+------------------------------------------------------------------------
 
-## Classificação de IAN
+## 6. Definição do risco de defasagem
 
-Na base do case, o `IAN` aparece majoritariamente com valores como:
+A variável alvo foi construída utilizando a regra:
 
-- `2.5`
-- `5.0`
-- `10.0`
+risco_defasagem = 1 se defasagem \< 0
 
-Por isso, a classificação foi ajustada para refletir a escala real dos dados:
+Fallbacks utilizados:
 
-- `<= 2.5` → **Severa**
-- `<= 5` → **Moderada**
-- `< 10` → **Leve**
-- `>= 10` → **Adequada**
+-   defas \< 0
+-   aproximação via IAN \<= 5
 
-Isso evita o erro de concentrar tudo em uma única categoria.
+Essa regra aproxima o conceito de **atraso em relação à fase ideal do
+aluno**.
 
----
+------------------------------------------------------------------------
 
-## Modelo utilizado
+## 7. Classificação de IAN
 
-A solução atual usa um modelo supervisionado para prever risco de defasagem.
+Faixas utilizadas:
 
-### Features utilizadas na versão estável
-- `ida`
-- `ieg`
-- `ips`
-- `ipp`
-- `iaa`
+\<= 2.5 → Severa\
+\<= 5 → Moderada\
+\< 10 → Leve\
+\>= 10 → Adequada
 
-Essas features foram escolhidas para manter consistência entre:
-- treino
-- métricas salvas
-- inferência no dashboard
+------------------------------------------------------------------------
 
-Isso também eliminou inconsistências como:
-- `ipv` vs `ianv`
-- colunas diferentes entre treinamento e simulador
+## 8. Estrutura do projeto
 
----
+app/ Home.py pages/ 1_Modelo.py 2_Analise_Exploratoria.py utils/
+loaders.py charts.py
 
-## Como executar o projeto
+data/ processed/ base_unificada.csv diagnostico_base.json
 
-### 1. Preparar a base tratada
-```bash
-python .\01_EDA_Passos_Magicos_chumbado.py
-```
+models/ modelo_risco_defasagem.joblib metricas_modelo.json
 
-### 2. Treinar o modelo
-```bash
-python .\02_Modelo_Risco_Defasagem_chumbado.py
-```
+notebooks/ src/ README.md
 
-### 3. Executar o dashboard
-```bash
-streamlit run .\app\Home.py
-```
+------------------------------------------------------------------------
 
----
+## 9. Dashboard
 
-## Funcionalidades do dashboard
+O dashboard possui três áreas principais:
 
-### Home
-- resumo executivo
-- conclusões do projeto
-- contextualização geral
+Home → resumo executivo\
+Análise exploratória → gráficos e insights\
+Modelo → importância das variáveis e simulador de risco
 
-### Modelo
-- métricas do modelo
-- importância das variáveis
-- simulador de risco
-- probabilidade predita
+------------------------------------------------------------------------
 
-### Análise Exploratória
-- filtro por ano
-- perfil de defasagem
-- evolução do desempenho
-- análise de relações entre indicadores
-- comparação por risco
-- análise por fase
-- heatmap de correlação
-- leitura executiva dos resultados
+## 10. Modelo preditivo
 
----
+O modelo utiliza aprendizado supervisionado para prever risco de
+defasagem.
 
-## Principais decisões técnicas
+Principais features utilizadas:
 
-### 1. Remoção da dependência de `statsmodels`
-O uso de `trendline="ols"` no Plotly gerava erro por depender de `statsmodels`.  
-A solução adotada foi substituir isso por uma linha de tendência calculada diretamente, evitando dependência desnecessária.
+-   ida
+-   ieg
+-   ips
+-   ipp
+-   iaa
+-   ian
+-   inde
 
-### 2. Padronização dos nomes de colunas
-As colunas foram normalizadas para evitar problemas com:
-- acentos
-- espaços
-- variações entre anos
-- nomes divergentes entre base e modelo
+------------------------------------------------------------------------
 
-### 3. Alinhamento entre treino e inferência
-O simulador do Streamlit foi ajustado para usar exatamente as mesmas features do modelo salvo, na mesma ordem esperada pelo pipeline.
+## 11. Resultados do modelo
 
-### 4. Foco em apresentação executiva
-Os gráficos foram organizados com storytelling e interpretação textual, visando facilitar a defesa do projeto perante a banca.
+Accuracy ≈ 0.978\
+Precision = 1.00\
+Recall ≈ 0.953\
+F1 Score ≈ 0.976\
+ROC AUC = 1.0
 
----
+Esses resultados indicam alta capacidade de separação entre alunos em
+risco e fora de risco.
 
-## Limitações atuais
+------------------------------------------------------------------------
 
-Apesar de a solução estar funcional e coerente, ainda existem pontos que podem ser melhorados:
+## 12. Feature Engineering
 
-- o modelo ainda pode evoluir em poder preditivo
-- a base pode conter limitações estruturais e ausência de algumas variáveis
-- a definição de risco depende da qualidade da variável `defasagem`
-- a interpretação de efetividade do programa ainda é exploratória e não causal
+Foram criadas variáveis derivadas como:
 
----
+-   média de indicadores
+-   variação entre indicadores
+-   indicadores compostos de desempenho
 
-## Próximos passos sugeridos
+Essas variáveis ajudam a capturar **padrões mais complexos de
+comportamento dos alunos**.
 
-### 1. Melhorar a acurácia do modelo
-Este é um dos próximos passos mais importantes.
+------------------------------------------------------------------------
 
-Possibilidades:
-- testar novos algoritmos
-- fazer tuning de hiperparâmetros
-- balancear classes, se necessário
-- avaliar feature engineering
-- comparar modelos com validação cruzada
-- incluir novas variáveis relevantes, desde que estejam consistentes entre treino e inferência
+## 13. Insights principais
 
-### 2. Refinar a engenharia de atributos
-Sugestões:
-- criar interações entre indicadores
-- testar versões normalizadas
-- construir indicadores compostos
-- explorar segmentações por fase e ano
+A análise sugere que:
 
-### 3. Melhorar a robustez da definição de risco
-Hoje o target está mais coerente, mas ainda pode ser refinado com apoio do entendimento pedagógico do case.
+-   risco de defasagem é multifatorial
+-   engajamento está associado ao desempenho
+-   fatores psicossociais ajudam a explicar vulnerabilidade educacional
+-   fases mais avançadas tendem a apresentar maior desenvolvimento
+    educacional
 
-### 4. Fortalecer a explicação de efetividade do programa
-A próxima evolução pode incluir:
-- análise longitudinal mais forte
-- coortes por fase
-- comparação entre grupos ao longo dos anos
-- métricas mais específicas de progresso
+------------------------------------------------------------------------
 
-### 5. Evoluir a camada visual
-Sugestões:
-- cards mais sofisticados
-- identidade visual mais forte
-- destaques automáticos de insights
-- seção final com recomendações executivas
+## 14. Como executar
 
-### 6. Criar pipeline reprodutível de ponta a ponta
-Uma evolução importante seria transformar todo o fluxo em pipeline único:
-- ingestão
-- tratamento
-- treino
-- avaliação
-- atualização automática do dashboard
+Instalar dependências:
 
----
+pip install -r requirements.txt
 
-## Conclusão
+Executar o dashboard:
 
-Este projeto busca transformar os dados do case Passos Mágicos em uma solução analítica e preditiva consistente, visualmente clara e aderente ao contexto do desafio.
+streamlit run app/Home.py
 
-A entrega combina:
-- tratamento de dados
-- análise exploratória
-- modelagem preditiva
-- visualização interativa
-- foco em comunicação executiva
+------------------------------------------------------------------------
 
-O resultado final não é apenas um painel, mas uma base sólida para discutir:
-- desempenho dos alunos
-- fatores associados à defasagem
-- risco futuro
-- sinais de efetividade do programa
+## 15. Entregáveis do Tech Challenge
 
----
+Este projeto inclui:
+
+-   notebook de análise exploratória
+-   notebook de modelagem
+-   modelo treinado
+-   dashboard interativo
+-   documentação completa
+-   roteiro de apresentação
+-   vídeo explicativo
+
+------------------------------------------------------------------------
 
 ## Autor
 
-**Diego Maradini**  
-Projeto desenvolvido para o **FIAP Tech Challenge 5**.
+Diego Maradini\
+FIAP --- Tech Challenge 5

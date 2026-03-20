@@ -23,39 +23,42 @@ def get_metric_value(metricas: dict, *possible_keys, default=None):
             return metricas[key]
     return default
 
-
 st.title("Modelo Preditivo de Risco de Defasagem")
-st.markdown(
-    """
-    Esta página atende à etapa preditiva do case: estimar a probabilidade
-    de um aluno entrar em risco de defasagem a partir dos indicadores disponíveis.
-    """
-)
+
+st.markdown("""
+Esta página apresenta o **modelo preditivo de risco de defasagem**.
+
+- O gráfico mostra **quais indicadores têm maior influência** na previsão do modelo.
+- No **simulador de risco**, ajuste os valores dos indicadores para representar diferentes cenários.
+- A probabilidade de risco será atualizada automaticamente com base nos valores escolhidos.
+
+Use o simulador para explorar como mudanças nos indicadores podem impactar o risco estimado.
+""")
 
 modelo = load_model()
 metricas = load_metrics()
 features_modelo = get_model_features(modelo, metricas)
 
-accuracy = get_metric_value(metricas, "accuracy", "acc")
-f1_score = get_metric_value(metricas, "f1", "f1_score")
-roc_auc = get_metric_value(metricas, "roc_auc", "auc")
+# accuracy = get_metric_value(metricas, "accuracy", "acc")
+# f1_score = get_metric_value(metricas, "f1", "f1_score")
+# roc_auc = get_metric_value(metricas, "roc_auc", "auc")
 
-c1, c2, c3 = st.columns(3)
-c1.metric("Accuracy", f"{accuracy:.2f}" if accuracy is not None else "-")
-c2.metric("F1-Score", f"{f1_score:.2f}" if f1_score is not None else "-")
-c3.metric("ROC-AUC", f"{roc_auc:.2f}" if roc_auc is not None else "-")
+# c1, c2, c3 = st.columns(3)
+# c1.metric("Accuracy", f"{accuracy:.2f}" if accuracy is not None else "-")
+# c2.metric("F1-Score", f"{f1_score:.2f}" if f1_score is not None else "-")
+# c3.metric("ROC-AUC", f"{roc_auc:.2f}" if roc_auc is not None else "-")
 
-with st.expander("Por que o simulador tem menos campos?"):
-    st.markdown(
-        f"""
-        O simulador foi reduzido para refletir apenas as variáveis realmente esperadas
-        pelo modelo salvo.
+# with st.expander("Por que o simulador tem menos campos?"):
+#     st.markdown(
+#         f"""
+#         O simulador foi reduzido para refletir apenas as variáveis realmente esperadas
+#         pelo modelo salvo.
 
-        **Features atuais do modelo:** `{features_modelo}`
+#         **Features atuais do modelo:** `{features_modelo}`
 
-        Isso evita erro de inferência causado por divergência entre treino e entrada do app.
-        """
-    )
+#         Isso evita erro de inferência causado por divergência entre treino e entrada do app.
+#         """
+#     )
 
 st.subheader("Importância das variáveis")
 fig_importancia = feature_importance(modelo, features_modelo)
@@ -97,13 +100,13 @@ cols = st.columns(3)
 for i, feature in enumerate(features_modelo):
     with cols[i % 3]:
         entrada_usuario[feature] = st.slider(
-            feature.upper(),
-            min_value=0.0,
-            max_value=10.0,
-            value=float(defaults.get(feature, 5.0)),
-            step=0.1,
-            help=descricoes.get(feature.lower(), "")
-        )
+        feature.replace("_", " ").upper(),
+        min_value=0.0,
+        max_value=10.0,
+        value=float(defaults.get(feature, 5.0)),
+        step=0.1,
+        help=descricoes.get(feature.lower(), "")
+    )
 
 if st.button("Calcular probabilidade de risco"):
     try:
