@@ -54,8 +54,19 @@ Fluxo do projeto:
 Dados → Tratamento → Feature Engineering → Modelo → Dashboard → Simulador de risco
 
 ---
+## Demonstração da aplicação
 
-# Estrutura do projeto
+### Home
+![Home](assets/gifs/home.gif)
+
+### Dashboard analítico
+![Dashboard](assets\gifs\dashboards.gif) 
+
+### Modelo preditivo
+![Modelo](assets/gifs/modelo.gif)
+
+# Estrutura do projeto 
+
 
 ```
 FIAP-TECH-CHALLENGER-5
