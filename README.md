@@ -60,7 +60,8 @@ Dados → Tratamento → Feature Engineering → Modelo → Dashboard → Simula
 ![Home](assets/gifs/home.gif)
 
 ### Dashboard analítico
-![Dashboard](assets\gifs\dashboards.gif) 
+![Dashboard](assets/gifs/dashboards.gif)
+
 
 ### Modelo preditivo
 ![Modelo](assets/gifs/modelo.gif)
