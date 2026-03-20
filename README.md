@@ -65,7 +65,8 @@ Dados → Tratamento → Feature Engineering → Modelo → Dashboard → Simula
 ### Modelo preditivo
 ![Modelo](assets/gifs/modelo.gif)
 
-# Estrutura do projeto
+# Estrutura do projeto 
+
 
 ```
 FIAP-TECH-CHALLENGER-5
