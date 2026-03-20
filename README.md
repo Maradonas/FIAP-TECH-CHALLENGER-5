@@ -54,6 +54,16 @@ Fluxo do projeto:
 Dados → Tratamento → Feature Engineering → Modelo → Dashboard → Simulador de risco
 
 ---
+## Demonstração da aplicação
+
+### Home
+![Home](assets/gifs/home.gif)
+
+### Dashboard analítico
+![Dashboard](assets/gifs/dashboard.gif)
+
+### Modelo preditivo
+![Modelo](assets/gifs/modelo.gif)
 
 # Estrutura do projeto
 
